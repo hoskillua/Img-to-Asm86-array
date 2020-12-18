@@ -1,5 +1,5 @@
 from PIL import Image
-im = Image.open('256x256bb.jpg') # I have not tried other formats but they should work too.
+im = Image.open('256x256bb.jpg')
 pixels = list(im.getdata())
 C = []
 
