@@ -6,7 +6,7 @@ px = pixels
 if '.png' in filename
     px = []
     for elm in pixels
-        px.append(elm[-1])
+        px.append(elm[:-1])
 C = []
 
 # Used pallete httpsupload.wikimedia.orgwikipediacommonsthumb666VGA_palette_with_black_borders.svg1200px-VGA_palette_with_black_borders.svg.png
