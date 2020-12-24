@@ -269,7 +269,7 @@ D = {
 }
 
 for c,i in enumerate(px):
-    if pixels[c][3] == 0:
+    if '.png' in filename and pixels[c][3] == 0:
         C.append(0)
     elif i in D.keys():
         C.append(D[i])
