@@ -1,6 +1,7 @@
 from PIL import Image
-filename = 'Hisoka.png'
+filename = 'Hisoka2.bmp'
 im = Image.open(filename)
+width, height = im.size
 pixels = list(im.getdata())
 px = pixels
 if '.png' in filename:
@@ -300,4 +301,6 @@ for i in range(len(C)):
         StrC = StrC + str(C[i]) + ", "
 
 StrC = StrC[:-2]
+print("imgW equ", width)
+print("imgH equ", height)
 print(StrC)
