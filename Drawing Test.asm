@@ -1,6 +1,8 @@
 .model small
 .Stack 64
 .data 
+Xposition DW 0  ;
+Yposition DW 0  ;x y coordinates of the image  
 ;put the img data outputed by python script here:
 imgW equ 64
 imgH equ 64
@@ -115,9 +117,11 @@ MAIN PROC FAR
 	       mov bx, 0100h    ; 640x400 screen graphics mode
 	       INT 10h      	;execute the configuration
 	       MOV AH,0Bh   	;set the configuration
-	       MOV CX, imgW  	;set the width (X) up to 64 (based on image resolution)
-	       MOV DX, imgH 	;set the hieght (Y) up to 64 (based on image resolution)
-		   mov DI, offset img  ; to iterate over the pixels
+	       MOV CX, Xposition  	;set the X coordinate drawing point 
+	       ADD CX, imgW  	;set the width (X) up to 64 (based on image resolution)
+	       MOV DX, Yposition 	;set the X coordinate drawing point 
+	       ADD DX, imgH 	;set the hieght (Y) up to 64 (based on image resolution)
+	       mov DI, offset img  ; to iterate over the pixels
 	       jmp Start    	;Avoid drawing before the calculations
 	Drawit:
 	       MOV AH,0Ch   	;set the configuration to writing a pixel
@@ -127,10 +131,12 @@ MAIN PROC FAR
 	Start: 
 		   inc DI
 	       DEC Cx       	;  loop iteration in x direction
-	       JNZ Drawit      	;  check if we can draw c urrent x and y and excape the y iteration
-	       mov Cx, imgW 	;  if loop iteration in y direction, then x should start over so that we sweep the grid
+	       cmp Cx,Xposition ;  check if we can draw current x and y and excape the y iteration
+	       JNZ Drawit
+           ADD Cx, imgW 	;  if loop iteration in y direction, then x should start over so that we sweep the grid
 	       DEC DX       	;  loop iteration in y direction
-	       JZ  ENDING   	;  both x and y reached 00 so end program
+	       cmp DX,Yposition
+	       JZ  ENDING   	;  both x and y reached the specified coordinates so end program
 		   Jmp Drawit
 
 	ENDING:
