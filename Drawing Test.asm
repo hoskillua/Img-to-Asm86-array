@@ -111,17 +111,26 @@ img DB 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 MAIN PROC FAR
 		   mov ax, @data
 		   mov DS, ax
-	       mov ax, 4F02h    ;
-	       mov bx, 0100h    ; 640x400 screen graphics mode
+
+
+				; This piece of code was intended only for testing, so if you are using this grpahics mode for your project make sure you
+				; understand how it works well. for example if you are going to get mouse clicks from user, it might pbe difficult to 
+				; set up unlike the graphics mode we usually use...
+
+
+	       mov ax, 4F02h    ; This Graphics mode configuration uses SVGA configuration (https://en.wikipedia.org/wiki/Super_VGA)
+				; which was not even created when asm86 first came out. I use it to be able to use 256 colors on 640x400
+				; it should work fine on tasm/masm extension for VSCode if your project does not use mouse clicks as controls
+	       mov bx, 0100h    
 	       INT 10h      	;execute the configuration
 	       MOV AH,0Bh   	;set the configuration
-	       MOV CX, imgW  	;set the width (X) up to 64 (based on image resolution)
-	       MOV DX, imgH 	;set the hieght (Y) up to 64 (based on image resolution)
-		   mov DI, offset img  ; to iterate over the pixels
+	       MOV CX, imgW  	;set the width (X) up to image width (based on image resolution)
+	       MOV DX, imgH 	;set the hieght (Y) up to image height (based on image resolution)
+	       mov DI, offset img  ; to iterate over the pixels
 	       jmp Start    	;Avoid drawing before the calculations
 	Drawit:
 	       MOV AH,0Ch   	;set the configuration to writing a pixel
-           mov al, [DI]     ; color of the current coordinates
+               mov al, [DI]     ; color of the current coordinates
 	       MOV BH,00h   	;set the page number
 	       INT 10h      	;execute the configuration
 	Start: 
